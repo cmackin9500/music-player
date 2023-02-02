@@ -58,7 +58,7 @@ app.get('/callback', (req, res) => {
   var storedState = req.cookies ? req.cookies[stateKey] : null;
 
   if (state === null || state !== storedState) {
-    res.redirect('/#' +
+    res.redirect('/?' +
       querystring.stringify({
         error: 'state_mismatch'
       }));
@@ -95,13 +95,13 @@ app.get('/callback', (req, res) => {
         });
 
         // we can also pass the token to the browser to make requests from there
-        res.redirect('http://localhost:3000/#' +
+        res.redirect('http://localhost:3000/?' +
           querystring.stringify({
             access_token: access_token,
             refresh_token: refresh_token
           }));
       } else {
-        res.redirect('http://localhost:3000/#' +
+        res.redirect('http://localhost:3000/?' +
           querystring.stringify({
             error: 'invalid_token'
           }));
