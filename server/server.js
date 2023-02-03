@@ -5,7 +5,7 @@ var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 
 var client_id = '9a6bbb853c3b433fa34db94e0a2e2881'; // Your client id
-var client_secret = 'CLIENT SECRET'; // Your secret
+var client_secret = '4c1c7fb37db84389ac12ff236264698c'; // Your secret
 var redirect_uri = 'http://localhost:3001/callback'; // Your redirect uri
 
 /**
@@ -37,7 +37,7 @@ app.get('/login', (req, res) => {
   res.cookie(stateKey, state);
 
   // your application requests authorization
-  var scope = 'user-read-private user-read-email user-read-playback-state';
+  var scope = 'user-read-private user-read-email user-read-playback-state user-modify-playback-state';
   res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
       response_type: 'code',

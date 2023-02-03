@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import SpotifyWebApi from "spotify-web-api-js";
+import { BsFillPauseBtnFill } from "react-icons/bs"
 
 const spotifyApi = new SpotifyWebApi();
 
@@ -7,6 +8,7 @@ const Dashboard = ({accessToken}) => {
     const [spotifyToken, setSpotifyToken] = useState("");
     const [nowPlaying, setNowPlaying] = useState({}); 
     const [loggedIn, setLoggedIn] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(false);
 
     useEffect(() => {
         setSpotifyToken(accessToken);
@@ -26,13 +28,33 @@ const Dashboard = ({accessToken}) => {
             }
             setNowPlaying({
                 name: data.item.name,
-                albumArt: data.item.album.images[0].url
+                albumArt: data.item.album.images[0].url,
+                duration: data.item.duration_ms
             });
 
           }, (err) => {
             console.log('Something went wrong!', err);
           }
         );
+    }
+    
+    const pauseNowPlaying = () => {
+        spotifyApi.pause()
+        .then(function() {
+          console.log('Playback paused');
+        }, function(err) {
+          //if the user making the request is non-premium, a 403 FORBIDDEN response code will be returned
+          console.log('Something went wrong!', err);
+        });
+    }
+
+    const resumePauseNowPlaying = () => {
+        spotifyApi.play()
+        .then(function() {
+          console.log('Playback started');
+        }, function(err) {
+          pauseNowPlaying();
+        });
     }
 
     return (
@@ -42,12 +64,16 @@ const Dashboard = ({accessToken}) => {
                 <>
                     <div> Now Playing: {nowPlaying.name} </div>
                     <div>
-                        <img src={nowPlaying.albumArt} style={{height:150}}/>
+                        <img className="albumArt" src={nowPlaying.albumArt} style={{height:150}}/>
+                        <br></br>
+                        <div className="buttons">
+                          <button onClick={() => getNowPlaying()}> Current Playing </button>
+                          <BsFillPauseBtnFill className="btn_action" onClick={() => resumePauseNowPlaying()}> Play/Pause </BsFillPauseBtnFill>
+                        </div>
+                        <br></br>
+                        <div> Duration: {nowPlaying.duration}</div>
                     </div>
                 </>
-            )}
-            {loggedIn && (
-                 <button onClick={() => getNowPlaying()}> Current Playing </button>
             )}
         </div>
     )

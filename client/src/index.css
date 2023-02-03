@@ -1,0 +1,50 @@
+body {
+    height: 100vh;
+    display: flex;
+    background-color: #886593;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+}
+.wrapper {
+    background: black;
+    width: 20rem;
+    padding: 2rem;
+    margin-top: 4rem;
+    border-radius: 1rem;
+  }
+  
+
+.dashboard {
+    background-color: black;
+    color: white;
+    cursor: "pointer";
+    text-align: center;
+}
+
+.buttons {
+    align-items: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn_action {
+    font-size: 2rem;
+    margin: 0 1rem;
+    cursor: pointer;
+}
+
+.btn_action:hover {
+    color: white;
+}
+
+.albumArt {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 100%;
+    height: auto;
+    width: auto;
+    background-size: 100% 100%;
+}
