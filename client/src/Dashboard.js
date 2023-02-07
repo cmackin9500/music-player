@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import SpotifyWebApi from "spotify-web-api-js";
 import { BsFillPauseBtnFill } from "react-icons/bs"
+import PlayBar from "./components/PlayBar";
 
 const spotifyApi = new SpotifyWebApi();
 
@@ -8,7 +9,7 @@ const Dashboard = ({accessToken}) => {
     const [spotifyToken, setSpotifyToken] = useState("");
     const [nowPlaying, setNowPlaying] = useState({}); 
     const [loggedIn, setLoggedIn] = useState(false);
-    const [isPlaying, setIsPlaying] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(true);
 
     useEffect(() => {
         setSpotifyToken(accessToken);
@@ -29,9 +30,20 @@ const Dashboard = ({accessToken}) => {
             setNowPlaying({
                 name: data.item.name,
                 albumArt: data.item.album.images[0].url,
-                duration: data.item.duration_ms
+                duration: data.item.duration_ms,
             });
 
+          }, (err) => {
+            console.log('Something went wrong!', err);
+          }
+        );
+    }
+
+    // checks if the user's music is currently playing or paused
+    const checkIsPlaying = () => {
+      spotifyApi.getMyCurrentPlaybackState()
+        .then((data) => {
+            setIsPlaying(data.context.is_playing);
           }, (err) => {
             console.log('Something went wrong!', err);
           }
@@ -68,7 +80,8 @@ const Dashboard = ({accessToken}) => {
                         <br></br>
                         <div className="buttons">
                           <button onClick={() => getNowPlaying()}> Current Playing </button>
-                          <BsFillPauseBtnFill className="btn_action" onClick={() => resumePauseNowPlaying()}> Play/Pause </BsFillPauseBtnFill>
+                          <br></br><br></br>
+                          <PlayBar isPlaying={isPlaying} setIsPlaying={setIsPlaying} resumePauseNowPlaying={resumePauseNowPlaying} checkIsPlaying={checkIsPlaying}/>
                         </div>
                         <br></br>
                         <div> Duration: {nowPlaying.duration}</div>
